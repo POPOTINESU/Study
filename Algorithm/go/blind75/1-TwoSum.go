@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 /*
 search one pair that they add up to target.
 */
