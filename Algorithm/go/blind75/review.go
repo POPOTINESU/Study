@@ -1,19 +1,13 @@
 package main
 
-func review(head *ListNode) bool {
-	if head == nil || head.Next == nil {
-		return false
+func review(nums []int) int {
+	size := len(nums)
+	expect := size * (size + 1) / 2
+	actual := 0
+
+	for _, n := range nums {
+		actual += n
 	}
 
-	slow, fast := head, head
-
-	for fast != nil && fast.Next != nil {
-		slow = slow.Next
-		fast = fast.Next.Next
-
-		if slow == fast {
-			return true
-		}
-	}
-	return false
+	return expect - actual
 }
