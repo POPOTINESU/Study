@@ -1,25 +1,25 @@
 package main
 
-func review(s string) bool {
-	stack := []rune{}
+func review(list1 *ListNode, list2 *ListNode) *ListNode {
+	dummy := &ListNode{}
+	tail := dummy
 
-	for _, r := range s {
-		if r == '(' || r == '[' || r == '{' {
-			stack = append(stack, r)
+	for list1 != nil && list2 != nil {
+		if list1.Val < list2.Val {
+			tail.Next = list1
+			list1 = list1.Next
 		} else {
-			if len(stack) == 0 {
-				return false
-			}
-
-			top := stack[len(stack)-1]
-			if (r == ')' && top != '(') ||
-				(r == '}' && top != '{') ||
-				(r == ']' && top != '[') {
-				return false
-			}
-
-			stack = stack[:len(stack)-1]
+			tail.Next = list2
+			list2 = list2.Next
 		}
+		tail = tail.Next
 	}
-	return len(stack) == 0
+
+	if list1 != nil {
+		tail.Next = list1
+	} else {
+		tail.Next = list2
+	}
+
+	return dummy.Next
 }
