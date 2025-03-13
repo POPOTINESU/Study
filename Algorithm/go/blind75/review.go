@@ -1,11 +1,11 @@
 package main
 
 func review(n int) int {
-	result := 0
+	dp := make([]int, n+1)
+	dp[0], dp[1] = 1, 1
 
-	for n > 0 {
-		n = n & (n - 1)
-		result ++
+	for i := 2; i <= n; i++ {
+		dp[i] = dp[i-1] + dp[i-2]
 	}
-	return result
+	return dp[n]
 }
