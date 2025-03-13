@@ -1,13 +1,25 @@
 package main
 
-func review(nums []int) int {
-	size := len(nums)
-	expect := size * (size + 1) / 2
-	actual := 0
+func review(s string) bool {
+	stack := []rune{}
 
-	for _, n := range nums {
-		actual += n
+	for _, r := range s {
+		if r == '(' || r == '[' || r == '{' {
+			stack = append(stack, r)
+		} else {
+			if len(stack) == 0 {
+				return false
+			}
+
+			top := stack[len(stack)-1]
+			if (r == ')' && top != '(') ||
+				(r == '}' && top != '{') ||
+				(r == ']' && top != '[') {
+				return false
+			}
+
+			stack = stack[:len(stack)-1]
+		}
 	}
-
-	return expect - actual
+	return len(stack) == 0
 }
