@@ -1,25 +1,27 @@
 package main
 
-func review(list1 *ListNode, list2 *ListNode) *ListNode {
-	dummy := &ListNode{}
-	tail := dummy
-
-	for list1 != nil && list2 != nil {
-		if list1.Val < list2.Val {
-			tail.Next = list1
-			list1 = list1.Next
-		} else {
-			tail.Next = list2
-			list2 = list2.Next
-		}
-		tail = tail.Next
+func review(root *TreeNode, subRoot *TreeNode) bool {
+	if root != nil {
+		return false
 	}
 
-	if list1 != nil {
-		tail.Next = list1
-	} else {
-		tail.Next = list2
+	if sameTree(root, subRoot) {
+		return true
 	}
 
-	return dummy.Next
+	return review(root.Left, subRoot) || review(root.Right, subRoot)
+}
+
+func sameTree(root *TreeNode, subRoot *TreeNode) bool {
+	if root == nil && subRoot == nil {
+		return true
+	}
+	if root == nil || subRoot == nil {
+		return false
+	}
+	if root.Val != subRoot.Val {
+		return false
+	}
+
+	return sameTree(root.Left, subRoot.Left) && sameTree(root.Right, subRoot.Right)
 }
