@@ -1,10 +1,11 @@
 package main
 
-func review(num uint32) uint32 {
-	var result uint32
-	for i := 0; i < 32; i++ {
-		result = result << 1 | (num & 1)
-		num = num >> 1
+func review(n int) int {
+	result := 0
+
+	for n > 0 {
+		n = n & (n - 1)
+		result ++
 	}
 	return result
 }
