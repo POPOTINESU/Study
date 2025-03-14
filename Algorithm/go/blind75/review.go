@@ -1,15 +1,11 @@
 package main
 
-func review(head *ListNode) *ListNode {
-	var prev *ListNode
-	var next *ListNode
+func review(n int) []int {
+	result := make([]int, n+1)
 
-	for head != nil{
-		next = head.Next
-		head.Next = prev
-		prev = head
-		head = next
+	for i := 0; i <= n; i++ {
+		result[i] = result[i>>1] + (i & 1)
 	}
 
-	return prev
+	return result
 }
