@@ -1,27 +1,24 @@
 package main
 
-func review(s string, t string) bool {
-	if len(s) != len(t) {
-		return false
+func review(prices []int) int {
+	if len(prices) < 2 {
+		return 0
 	}
 
-	// Build the cache
-	cache := make(map[rune]int)
-	for _, r := range s {
-		cache[r]++
-	}
+	minPrice := prices[0]
+	maxProfit := 0
 
-	// Check for anagram
-	for _, r := range t {
-		if n, ok := cache[r]; ok {
-			if n-1 < 0 {
-				return false
-			}
-			cache[r] = n - 1
-		} else {
-			return false
+	for _, price := range prices {
+		if price < minPrice {
+			minPrice = price
+		}
+
+		// Update max profit
+		profit := price - minPrice
+		if profit > maxProfit {
+			maxProfit = profit
 		}
 	}
 
-	return true
+	return maxProfit
 }
