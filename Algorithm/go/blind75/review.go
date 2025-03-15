@@ -1,11 +1,13 @@
 package main
 
-func review(n int) []int {
-	result := make([]int, n+1)
+func review(nums []int) bool {
+	cache := make(map[int]struct{})
 
-	for i := 0; i <= n; i++ {
-		result[i] = result[i>>1] + (i & 1)
+	for _, num := range nums {
+		if _, ok := cache[num]; ok {
+			return true
+		}
+		cache[num] = struct{}{}
 	}
-
-	return result
+	return false
 }
