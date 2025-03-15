@@ -1,24 +1,21 @@
 package main
 
-func review(prices []int) int {
-	if len(prices) < 2 {
-		return 0
+import "sort"
+
+func review(intervals [][]int) bool {
+	if len(intervals) < 2 {
+		return true
 	}
 
-	minPrice := prices[0]
-	maxProfit := 0
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
 
-	for _, price := range prices {
-		if price < minPrice {
-			minPrice = price
-		}
-
-		// Update max profit
-		profit := price - minPrice
-		if profit > maxProfit {
-			maxProfit = profit
+	// Check for the duplicate meeting time
+	for i := 1; i < len(intervals); i++ {
+		if intervals[i][0] < intervals[i-1][1] {
+			return false
 		}
 	}
-
-	return maxProfit
+	return true
 }
