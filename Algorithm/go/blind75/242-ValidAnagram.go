@@ -5,24 +5,20 @@ func isAnagram(s string, t string) bool {
 		return false
 	}
 
+	// Build the cache
 	cache := make(map[rune]int)
 	for _, r := range s {
 		cache[r]++
 	}
 
+	// Check for anagram
 	for _, r := range t {
-		if v, ok := cache[r]; ok {
-			if v-1 < 0 {
+		if n, ok := cache[r]; ok {
+			if n-1 < 0 {
 				return false
 			}
-			cache[r] = v - 1
+			cache[r] = n - 1
 		} else {
-			return false
-		}
-	}
-
-	for _, v := range cache {
-		if v != 0 {
 			return false
 		}
 	}
