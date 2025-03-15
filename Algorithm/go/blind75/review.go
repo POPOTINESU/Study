@@ -1,13 +1,16 @@
 package main
 
-func review(nums []int) bool {
-	cache := make(map[int]struct{})
-
-	for _, num := range nums {
-		if _, ok := cache[num]; ok {
-			return true
-		}
-		cache[num] = struct{}{}
+func review(root *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
 	}
-	return false
+
+	left := review(root.Left)
+	right := review(root.Right)
+
+	// invert tree
+	root.Left = right
+	root.Right = left
+
+	return root
 }
