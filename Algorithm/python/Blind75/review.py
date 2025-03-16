@@ -1,48 +1,26 @@
-from collections import deque
-from typing import Optional
-
-
-class Node:
-    def __init__(self, val=0, neighbors=None):
-        self.val = val
-        self.neighbors = neighbors if neighbors is not None else []
+from collections import defaultdict, deque
+from typing import List
 
 
 class Solution:
-    def cloneGraph(self, node: Optional["Node"]) -> Optional["Node"]:
-        if not node:
-            return None
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+        if len(edges) != n - 1:
+            return False
 
-        visited = {}
+        # Create adjacency list
+        graph_map = defaultdict(list)
+        for a, b in edges:
+            graph_map[a].append(b)
+            graph_map[b].append(a)
 
-        def dfs(node: Node) -> Node:
+        visited = set()
+
+        def dfs(node):
             if node in visited:
-                return visited[node]
+                return
+            visited.add(node)
+            for neighbor in graph_map[node]:
+                dfs(neighbor)
 
-            clone_node = Node(node.val)
-            visited[node] = clone_node
-            for neighbor in node.neighbors:
-                clone_node.neighbors.append(dfs(neighbor))
-
-            return clone_node
-
-        return dfs(node)
-
-    def bfsCloneGraph(self, node: Optional["Node"]) -> Optional["Node"]:
-        if not node:
-            return None
-
-        visited: dict[Node, Node] = {}
-        # queue include original nodes
-        queue = deque([node])
-        visited[node] = Node(node.val)
-
-        while queue:
-            curr = queue.popleft()
-            for neighbor in curr.neighbors:
-                if neighbor not in visited and isinstance(neighbor, Node):
-                    visited[neighbor] = Node(neighbor.val)
-                    queue.append(neighbor)
-                visited[curr].neighbors.append(visited[neighbor])
-
-        return visited[node]
+        dfs(0)
+        return len(visited) == n
