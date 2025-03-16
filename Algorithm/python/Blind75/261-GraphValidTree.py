@@ -2,30 +2,29 @@ from typing import List
 
 
 class UnionFind:
-    def __init__(self, n: int):
+    def __init__(self, n: int) -> None:
         self._parent = [i for i in range(n)]
         self._rank = [1] * n
 
-    def find(self, edge: int):
-        if edge != self._parent[edge]:
-            self._parent[edge] = self.find(self._parent[edge])
+    def find(self, x: int) -> int:
+        if x != self._parent[x]:
+            self._parent[x] = self.find(self._parent[x])
+        return self._parent[x]
 
-        return self._parent[edge]
+    def union(self, edge1: int, edge2: int) -> int:
+        rootX = self.find(edge1)
+        rootY = self.find(edge2)
 
-    def union(self, edge1: int, edge2: int):
-        edgeX = self.find(edge1)
-        edgeY = self.find(edge2)
-
-        if edgeX == edgeY:
+        if rootX == rootY:
             return False
 
-        if self._rank[edgeX] > self._rank[edgeY]:
-            self._parent[edgeY] = edgeX
-        elif self._rank[edgeX] < self._rank[edgeY]:
-            self._parent[edgeX] = edgeY
+        if self._rank[rootX] > self._rank[rootY]:
+            self._parent[rootY] = rootX
+        elif self._rank[rootX] < self._rank[rootY]:
+            self._parent[rootX] = rootY
         else:
-            self._parent[edgeY] = edgeX
-            self._rank[edgeX] += 1
+            self._parent[rootY] = rootX
+            self._rank[rootX] += 1
 
         return True
 
@@ -35,10 +34,9 @@ class Solution:
         if len(edges) != n - 1:
             return False
 
-        unionFind = UnionFind(n)
-
-        for A, B in edges:
-            if not unionFind.union(A, B):
+        union_find = UnionFind(n)
+        for edge1, edge2 in edges:
+            if not union_find.union(edge1, edge2):
                 return False
 
         return True
