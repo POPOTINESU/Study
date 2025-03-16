@@ -1,26 +1,32 @@
-from collections import defaultdict, deque
-from typing import List
+from typing import Optional
+
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 
 class Solution:
-    def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        if len(edges) != n - 1:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        def isSameTree(root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+            if not root and not subRoot:
+                return True
+            if not root or not subRoot or root.val != subRoot.val:
+                return False
+
+            return isSameTree(root.left, subRoot.left) and isSameTree(
+                root.right, subRoot.right
+            )
+
+        if not subRoot:
+            return True
+
+        if not root:
             return False
 
-        # Create adjacency list
-        graph_map = defaultdict(list)
-        for a, b in edges:
-            graph_map[a].append(b)
-            graph_map[b].append(a)
+        if root.val == subRoot.val and isSameTree(root, subRoot):
+            return True
 
-        visited = set()
-
-        def dfs(node):
-            if node in visited:
-                return
-            visited.add(node)
-            for neighbor in graph_map[node]:
-                dfs(neighbor)
-
-        dfs(0)
-        return len(visited) == n
+        return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
