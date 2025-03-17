@@ -1,19 +1,18 @@
+from typing import List
+
+
 class Solution:
-    def countSubstrings(self, s: str) -> int:
-        if len(s) < 1:
-            return len(s)
+    def maxArea(self, height: List[int]) -> int:
+        left, right = 0, len(height) - 1
 
-        def count_palindromic_substrings(left: int, right: int) -> int:
-            count = 0
-            while left >= 0 and right < len(s) and s[left] == s[right]:
-                count += 1
-                left -= 1
-                right += 1
-            return count
+        max_area = 0
+        while left < right:
+            low_h = min(height[left], height[right])
+            max_area = max(max_area, low_h * (right - left))
 
-        result = 0
-        for i in range(len(s)):
-            result += count_palindromic_substrings(i, i)
-            result += count_palindromic_substrings(i, i + 1)
-        
-        return result
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+
+        return max_area
