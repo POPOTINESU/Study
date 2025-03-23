@@ -1,29 +1,20 @@
-from collections import deque
-from typing import Optional
-
-
-class Node:
-    def __init__(self, val=0, neighbors=None):
-        self.val = val
-        self.neighbors = neighbors if neighbors is not None else []
-
-
 class Solution:
-    def cloneGraph(self, node: Optional["Node"]) -> Optional["Node"]:
-        if not node:
-            return None
+    def countSubstrings(self, s: str) -> int:
+        size = len(s)
+        if size < 2:
+            return size
+        result = 0
 
-        visited: dict[Node, Node] = {}
-        visited[node] = Node(node.val)
-        queue = deque([node])
+        def count_palindromes(left: int, right: int) -> int:
+            count = 0
+            while left >= 0 and right < size and s[left] == s[right]:
+                count += 1
+                left -= 1
+                right += 1
 
-        while queue:
-            curr = queue.popleft()
-            for neighbor in curr.neighbors:
-                if neighbor not in visited:
-                    visited[neighbor] = Node(neighbor.val)
-                    queue.append(neighbor)
+            return count
 
-                visited[curr].neighbors.append(visited[neighbor])
+        for i in range(size):
+            result += count_palindromes(i, i) + count_palindromes(i, i + 1)
 
-        return visited[node]
+        return result
