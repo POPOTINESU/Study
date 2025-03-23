@@ -2,15 +2,27 @@ from typing import List
 
 
 class Solution:
-    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        word_set = set(wordDict)
-        dp = [False] * (len(s) + 1)
-        dp[0] = True
-        
-        for right in range(1, len(s) + 1):
-            for left in range(right):
-                if dp[left] and s[left:right] in word_set:
-                    dp[right] = True
-                    break
-        
-        return dp[len(s)]
+    def longestConsecutive(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+
+        longest = 0
+        nums_set = set(nums)
+
+        for num in nums_set:
+            if num - 1 not in nums_set:
+                count = 0
+                curr = num
+                while curr in nums_set:
+                    count += 1
+                    curr += 1
+
+                if longest < count:
+                    longest = count
+
+        return longest
+
+
+if __name__ == "__main__":
+    s = Solution()
+    print(s.longestConsecutive([100, 4, 200, 1, 3, 2]))
