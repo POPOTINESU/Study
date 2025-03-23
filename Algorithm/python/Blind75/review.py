@@ -1,47 +1,29 @@
-from typing import List
+from collections import deque
+from typing import Optional
 
 
-class UnionFind:
-    def __init__(self, n: int) -> None:
-        self._parent = list(range(n)) 
-        self._rank = [0] * (n + 1)
-
-    def find(self, x: int) -> int:
-        if x != self._parent[x]:
-            x = self.find(self._parent[x])
-        return self._parent[x]
-
-    def union(self, x: int, y: int) -> bool:
-        X_root = self.find(x)
-        Y_root = self.find(y)
-
-        if X_root == Y_root:
-            return False
-
-        if self._rank[X_root] > self._rank[Y_root]:
-            self._parent[Y_root] = X_root
-        elif self._rank[X_root] < self._rank[Y_root]:
-            self._parent[X_root] = Y_root
-        else:
-            self._parent[Y_root] = X_root
-            self._rank[X_root] += 1
-
-        return True
+class Node:
+    def __init__(self, val=0, neighbors=None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
 
 
 class Solution:
-    def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        if n - 1 != len(edges):
-            return False
-        union_find = UnionFind(n)
-        
-        for x, y in edges:
-            if not union_find.union(x, y):
-                return False
-        
-        return True
+    def cloneGraph(self, node: Optional["Node"]) -> Optional["Node"]:
+        if not node:
+            return None
 
-if __name__ == "__main__":
-    s = Solution()
+        visited: dict[Node, Node] = {}
+        visited[node] = Node(node.val)
+        queue = deque([node])
 
-    print(s.validTree(5,[[0,1],[0,2],[0,3],[1,4]]))
+        while queue:
+            curr = queue.popleft()
+            for neighbor in curr.neighbors:
+                if neighbor not in visited:
+                    visited[neighbor] = Node(neighbor.val)
+                    queue.append(neighbor)
+
+                visited[curr].neighbors.append(visited[neighbor])
+
+        return visited[node]
