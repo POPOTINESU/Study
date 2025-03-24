@@ -1,9 +1,14 @@
 class Solution:
-    def climbStairs(self, n: int) -> int:
-        dp = [0] * (n + 1)
-        dp[0], dp[1] = 1, 1
+    def hammingWeight(self, n: int) -> int:
+        result = 0
 
-        for i in range(2, n + 1):
-            dp[i] = dp[i - 1] + dp[i - 2]
+        while n > 0:
+            n = n & (n - 1)
+            result += 1
 
-        return dp[n]
+        return result
+
+
+if __name__ == "__main__":
+    s = Solution()
+    s.hammingWeight(11)
